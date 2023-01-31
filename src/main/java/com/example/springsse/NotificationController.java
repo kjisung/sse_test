@@ -28,7 +28,8 @@ public class NotificationController {
 //    }
 
     @PostMapping("/notification/read")
-    public NotificationResponseDto readNotification(@RequestBody NotificationDto notificationDto) {
+    public boolean readNotification(@RequestBody NotificationDto notificationDto) {
+        System.out.println("notificationDto.getNotyType() = " + notificationDto.getNotyType());
         return notificationService.readNotification(notificationDto);
     }
 

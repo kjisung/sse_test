@@ -1,5 +1,6 @@
 package com.example.springsse;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -9,15 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class NotificationService {
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
 
     private final EmitterRepository emitterRepository;
     private final QNotificationRepository qNotificationRepository;
-
-    public NotificationService(EmitterRepository emitterRepository) {
-        this.emitterRepository = emitterRepository;
-    }
+    private final NotificationRepository notificationRepository;
 
     public SseEmitter subscribe(Long userId, String lastEventId) {
         // 1
@@ -46,9 +45,11 @@ public class NotificationService {
         return emitter;
     }
 
-    public void send(Member receiver, Integer type, String content) {
-        Notification notification = createNotification(receiver, type, content);
+    public void send(Member receiver, String type) {
+        Notification notification = createNotification(receiver, type);
         String id = String.valueOf(receiver.getId());
+
+        notificationRepository.save(notification);
 
         // 로그인 한 유저의 SseEmitter 모두 가져오기
         Map<String, SseEmitter> sseEmitters = emitterRepository.findAllStartWithById(id);
@@ -62,11 +63,10 @@ public class NotificationService {
         );
     }
 
-    private Notification createNotification(Member receiver, Integer type, String content) {
+    private Notification createNotification(Member receiver, String type) {
         return Notification.builder()
                 .receiver(receiver)
-                .content(content)
-                .notificationType(NotificationType.ofCode(type))
+                .notificationType(NotificationType.valueOf(type))
                 .isRead(false)
                 .build();
     }
@@ -84,15 +84,20 @@ public class NotificationService {
         }
     }
 
-//    public void creatNoty(NotificationDto notificationDto) {
-//        Member admin = new Member("admin");
-//        send(admin, notificationDto.getNotyType() ,notificationDto.getContent());
-//    }
-//
     @Transactional
-    public NotificationResponseDto readNotification(NotificationDto notificationDto) {
-        List<Notification> notificationList =
+    public boolean readNotification(NotificationDto notificationDto) {
+        NotificationType type = NotificationType.ofCode(notificationDto.getNotyType());
+        System.out.println("type = " + type);
+        List<Notification> notificationList = qNotificationRepository.findByUnreadNotification(notificationDto.getMemberId(), type);
+        System.out.println("notificationList.size() = " + notificationList.size());
 
-        return NotificationResponseDto.creat();
+        for (Notification noty : notificationList) {
+            noty.updateIsRead(true);
+            System.out.println("noty.getIsRead() = " + noty.getIsRead());
+            notificationRepository.save(noty);
+            System.out.println("noty.getIsRead() = " + noty.getIsRead());
+        }
+
+        return true;
     }
 }

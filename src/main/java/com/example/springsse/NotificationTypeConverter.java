@@ -1,7 +1,9 @@
 package com.example.springsse;
 
 import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 
+@Converter
 public class NotificationTypeConverter implements AttributeConverter<NotificationType, Integer> {
 
     @Override

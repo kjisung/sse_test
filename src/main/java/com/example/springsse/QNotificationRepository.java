@@ -14,10 +14,10 @@ import static com.example.springsse.QNotification.notification;
 public class QNotificationRepository {
     public final JPAQueryFactory jpaQueryFactory;
 
-    public List<Notification> findByUnreadNotification(Member receiver, NotificationType type ) {
+    public List<Notification> findByUnreadNotification(Long receiverId, NotificationType type ) {
         return jpaQueryFactory
                 .selectFrom(notification)
-                .where(notification.receiver.eq(receiver), notification.notificationType.eq(type), notification.isRead.eq(false))
+                .where(notification.receiver.id.eq(receiverId), notification.notificationType.eq(type), notification.isRead.eq(false))
                 .fetch();
     }
 }

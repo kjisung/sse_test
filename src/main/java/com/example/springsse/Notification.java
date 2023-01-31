@@ -1,13 +1,8 @@
 package com.example.springsse;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.security.Timestamp;
 
 @Entity
 @Getter
@@ -18,9 +13,6 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
-
-    @Column
-    private String content;
 
     @Column(nullable = false)
     private Boolean isRead;
@@ -35,10 +27,13 @@ public class Notification {
     private Member receiver;
 
     @Builder
-    public Notification(Member receiver, NotificationType notificationType, String content, Boolean isRead) {
+    public Notification(Member receiver, NotificationType notificationType, Boolean isRead) {
         this.receiver = receiver;
         this.notificationType = notificationType;
-        this.content = content;
+        this.isRead = isRead;
+    }
+
+    public void updateIsRead(boolean isRead) {
         this.isRead = isRead;
     }
 
