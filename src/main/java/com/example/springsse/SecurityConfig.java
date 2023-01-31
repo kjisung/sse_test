@@ -28,7 +28,7 @@ public class SecurityConfig {
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
         .authorizeRequests() // 다음 리퀘스트에 대한 사용권한 체크
         .antMatchers("/subscribe/**").permitAll() // 테스트용
-        .antMatchers("/noty/**").permitAll() // swagger
+        .antMatchers("/notification/**").permitAll() // swagger
         .anyRequest().hasRole("USER").and(); // 그외 나머지 요청은 모두 인증된 회원만 접근 가능
 
 
@@ -38,6 +38,6 @@ public class SecurityConfig {
   @Bean
   public WebSecurityCustomizer webSecurityCustomizer() {
     return (web) -> web.ignoring().antMatchers("/api-docs", "/api-docs/**", "/swagger-resources/**",
-        "/swagger-ui/**", "/webjars/**", "/swagger/**", "/swagger-ui.html");
+        "/swagger-ui/**", "/webjars/**", "/swagger/**", "/swagger-ui.html","/h2-console/**");
   }
 }
