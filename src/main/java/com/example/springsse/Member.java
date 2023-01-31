@@ -14,9 +14,9 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private String id;
+    private Long id;
 
-    Member(String id) {
+    Member(Long id) {
         this.id = id;
     }
 

@@ -21,11 +21,15 @@ public class NotificationController {
         return notificationService.subscribe(id, lastEventId);
     }
 
-    @PostMapping("/noty")
-    public void creatNoty(@RequestBody NotificationDto notificationDto) {
-        System.out.println("notificationDto.getContent() = " + notificationDto.getContent());
-        notificationService.creatNoty(notificationDto);
-    }
+//    @PostMapping("/noty")
+//    public void creatNoty(@RequestBody NotificationDto notificationDto) {
+//        System.out.println("notificationDto.g = " + notificationDto.g);
+//        notificationService.creatNoty(notificationDto);
+//    }
 
+    @PostMapping("/notification/read")
+    public NotificationResponseDto readNotification(@RequestBody NotificationDto notificationDto) {
+        return notificationService.readNotification(notificationDto);
+    }
 
 }

@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class NotificationDto {
-    private String content;
+    private Long id;
     private Integer notyType;
 
 }

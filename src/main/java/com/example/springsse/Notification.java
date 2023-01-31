@@ -22,9 +22,6 @@ public class Notification {
     @Column
     private String content;
 
-//    @Embedded
-//    private RelatedURL url;
-
     @Column(nullable = false)
     private Boolean isRead;
 

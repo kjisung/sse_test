@@ -3,7 +3,9 @@ package com.example.springsse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -11,6 +13,7 @@ public class NotificationService {
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
 
     private final EmitterRepository emitterRepository;
+    private final QNotificationRepository qNotificationRepository;
 
     public NotificationService(EmitterRepository emitterRepository) {
         this.emitterRepository = emitterRepository;
@@ -81,8 +84,15 @@ public class NotificationService {
         }
     }
 
-    public void creatNoty(NotificationDto notificationDto) {
-        Member admin = new Member("admin");
-        send(admin, notificationDto.getNotyType() ,notificationDto.getContent());
+//    public void creatNoty(NotificationDto notificationDto) {
+//        Member admin = new Member("admin");
+//        send(admin, notificationDto.getNotyType() ,notificationDto.getContent());
+//    }
+//
+    @Transactional
+    public NotificationResponseDto readNotification(NotificationDto notificationDto) {
+        List<Notification> notificationList =
+
+        return NotificationResponseDto.creat();
     }
 }
